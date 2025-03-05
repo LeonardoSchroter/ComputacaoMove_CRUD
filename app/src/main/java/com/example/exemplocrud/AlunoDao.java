@@ -101,4 +101,16 @@ public class AlunoDao {
         String regex = "^\\(\\d{2}\\) 9\\d{4}-\\d{4}$";
         return Pattern.matches(regex, telefone);
     }
+
+    public void excluir(Aluno a){
+        banco.delete("aluno", "id = ?",new String[]{a.getId().toString()}); // no lugar do ? vai colocar o id do aluno
+    }
+
+    public void atualizar(Aluno aluno){
+        ContentValues values = new ContentValues(); //valores que irei inserir
+        values.put("nome", aluno.getNome());
+        values.put("cpf", aluno.getCpf());
+        values.put("telefone", aluno.getTelefone());
+        banco.update("aluno", values, "id = ?", new String[]{aluno.getId().toString()});
+    }
 }

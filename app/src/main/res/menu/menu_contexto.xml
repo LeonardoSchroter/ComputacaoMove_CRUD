@@ -2,6 +2,12 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Item" />
-    <item android:title="Item" />
+    <item
+        android:onClick="excluir"
+        android:title="excluir"
+        android:visible="true" />
+    <item
+        android:onClick="atualizar"
+        android:title="Atualizar"
+        android:visible="true" />
 </menu>

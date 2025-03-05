@@ -19,8 +19,13 @@ public class MainActivity extends AppCompatActivity {
     private EditText cpf;
     private EditText telefone;
     private AlunoDao dao;
+
+    private Aluno aluno = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -29,6 +34,14 @@ public class MainActivity extends AppCompatActivity {
         telefone = findViewById(R.id.editTelefone);
 
         dao = new AlunoDao(this);
+
+        Intent it = getIntent(); //pega intenção
+        if(it.hasExtra("aluno")){
+            aluno = (Aluno) it.getSerializableExtra("aluno");
+            nome.setText(aluno.getNome().toString());
+            cpf.setText(aluno.getCpf());
+            telefone.setText(aluno.getTelefone());
+        }
 
     }
 
@@ -57,12 +70,23 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        Aluno a = new Aluno();
-        a.setNome(nome.getText().toString());
-        a.setCpf(cpf.getText().toString());
-        a.setTelefone(telefone.getText().toString());
-        long id = dao.inserir(a);
-        Toast.makeText(this,"Aluno inserido com id: "+id,Toast.LENGTH_SHORT).show();
+        if(aluno==null) {
+            Aluno a = new Aluno();
+            a.setNome(nome.getText().toString());
+            a.setCpf(cpf.getText().toString());
+            a.setTelefone(telefone.getText().toString());
+            long id = dao.inserir(a);
+            Toast.makeText(this,"Aluno inserido com id: "+id,Toast.LENGTH_SHORT).show();
+        }
+        else {
+            aluno.setNome(nome.getText().toString());
+            aluno.setCpf(cpf.getText().toString());
+            aluno.setTelefone(telefone.getText().toString());
+            dao.atualizar(aluno); //inserir o aluno
+            Toast.makeText(this,"Aluno Atualizado!! com id: ", Toast.LENGTH_SHORT).show();
+        }
+
+
 
     }
 

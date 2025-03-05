@@ -1,6 +1,7 @@
 package com.example.exemplocrud;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -27,5 +28,8 @@ public class ListarAlunosActivity extends AppCompatActivity {
         ArrayAdapter<Aluno> adaptador = new ArrayAdapter<Aluno>(this, android.R.layout.simple_list_item_1, alunos);
 //colocar na listView o adaptador
         listView.setAdapter(adaptador);
+
     }
+
+
 }
