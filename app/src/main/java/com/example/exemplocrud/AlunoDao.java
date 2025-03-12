@@ -27,6 +27,8 @@ public class AlunoDao {
             values.put("nome", aluno.getNome());
             values.put("cpf", aluno.getCpf());
             values.put("telefone", aluno.getTelefone());
+            values.put("fotoBytes", aluno.getFotoBytes());
+
             return banco.insert("aluno", null, values);
         }else{
             return -1;
@@ -36,7 +38,7 @@ public class AlunoDao {
     public List<Aluno> obterTodos(){
         List<Aluno> alunos = new ArrayList<>();
 //cursor aponta para as linhas retornadas
-        Cursor cursor = banco.query("aluno", new String[]{"id", "nome", "cpf", "telefone"},
+        Cursor cursor = banco.query("aluno", new String[]{"id", "nome", "cpf", "telefone","fotoBytes"},
                 null, null,null,null,null); //nome da tabela, nome das colunas, completa com null o método
 //que por padrão pede esse número de colunas obrigatórias
         while(cursor.moveToNext()){ //verifica se consegue mover para o próximo ponteiro ou linha
@@ -45,6 +47,7 @@ public class AlunoDao {
             a.setNome(cursor.getString(1)); // new String[]{"id", "nome", "cpf", "telefone"}, nome é coluna '1'
             a.setCpf(cursor.getString(2)); // new String[]{"id", "nome", "cpf", "telefone"}, cpf é coluna '2'
             a.setTelefone(cursor.getString(3)); // new String[]{"id", "nome", "cpf", "telefone"}, telefone é coluna '3'
+            a.setFotoBytes(cursor.getBlob(4));
             alunos.add(a);
         }
         return alunos;
@@ -111,6 +114,8 @@ public class AlunoDao {
         values.put("nome", aluno.getNome());
         values.put("cpf", aluno.getCpf());
         values.put("telefone", aluno.getTelefone());
+        values.put("fotoBytes", aluno.getFotoBytes());
+
         banco.update("aluno", values, "id = ?", new String[]{aluno.getId().toString()});
     }
 }

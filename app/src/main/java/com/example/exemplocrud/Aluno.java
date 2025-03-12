@@ -13,6 +13,16 @@ public class Aluno implements Serializable {
 
     private String telefone;
 
+    private byte[] fotoBytes;
+
+    public byte[] getFotoBytes() {
+        return fotoBytes;
+    }
+
+    public void setFotoBytes(byte[] fotoBytes) {
+        this.fotoBytes = fotoBytes;
+    }
+
     public Aluno() {
     }
 

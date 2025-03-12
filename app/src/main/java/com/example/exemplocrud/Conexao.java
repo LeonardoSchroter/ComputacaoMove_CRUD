@@ -16,12 +16,17 @@ public class Conexao extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table aluno(id integer primary key autoincrement, "+
-                "nome varchar(50), cpf varchar(50), telefone varchar(50))");
+       // db.execSQL("create table aluno(id integer primary key autoincrement, "+
+         //       "nome varchar(50), cpf varchar(50), telefone varchar(50))");
+
+        db.execSQL("create table aluno(id integer primary key autoincrement, " +"nome varchar(50), " +
+                "cpf varchar(50), telefone varchar(50), foto_bytes BLOB)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        if (oldVersion < 2) {
+            db.execSQL("ALTER TABLE aluno ADD COLUMN fotoBytes BLOB");
+        }
     }
 }
