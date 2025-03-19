@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
@@ -48,26 +49,26 @@ public class MainActivityListar extends AppCompatActivity {
 
     }
 
-    public void irParaCadastrar(View view){
-        Intent intent = new Intent(this,MainActivity.class);
+    public void irParaCadastrar(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
     //METODO MENU_CONTEXTO PARA INFLAR O MENU QUANDO ITEM PRESSIONADO
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo){
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
 
         MenuInflater i = getMenuInflater();
         i.inflate(R.menu.menu_contexto, menu); //Aqui coloca o nome do menu que havia sido configurado
     }
 
-    public void excluir(MenuItem item){
+    public void excluir(MenuItem item) {
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         final Aluno alunoExcluir = alunosFiltrados.get(menuInfo.position);
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Atenção")
                 .setMessage("Realmente deseja excluir o aluno?")
-                .setNegativeButton("NÃO",null)
+                .setNegativeButton("NÃO", null)
                 .setPositiveButton("SIM", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -76,16 +77,36 @@ public class MainActivityListar extends AppCompatActivity {
                         dao.excluir(alunoExcluir);
                         listView.invalidateViews();
                     }
-                } ).create(); //criar a janela
+                }).create(); //criar a janela
         dialog.show(); //manda mostrar a janela
     }
 
-    public void atualizar(MenuItem item){
+    public void atualizar(MenuItem item) {
 
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         final Aluno alunoAtualizar = alunosFiltrados.get(menuInfo.position);
         Intent it = new Intent(this, MainActivity.class); //Nosso cadastrar se chama 'MainActivity’
-        it.putExtra("aluno",alunoAtualizar);
+        it.putExtra("aluno", alunoAtualizar);
         startActivity(it);
     }
+
+    public void buscarFiltrado(View view) {
+        EditText edtBuscar = findViewById(R.id.edit_text);
+        String texto = edtBuscar.getText().toString().trim();
+
+        alunosFiltrados.clear();
+
+        if (texto.isEmpty()) {
+            alunosFiltrados.addAll(alunos);
+        } else {
+            for (Aluno aluno : alunos) {
+                if (aluno.getNome().toLowerCase().contains(texto.toLowerCase())) {
+                    alunosFiltrados.add(aluno);
+                }
+            }
+        }
+
+        ArrayAdapter<Aluno> adaptador = new ArrayAdapter<Aluno>(this, android.R.layout.simple_list_item_1, alunosFiltrados);
+
+        listView.setAdapter(adaptador);    }
 }
